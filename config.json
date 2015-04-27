@@ -1,0 +1,13 @@
+{
+  "services":{
+    "authenticate":{
+      "authenticate1":{"host":"http://192.168.33.10:8200"}
+    },
+    "files":{
+      "files1":{"host":"http://192.168.33.10:8202"}
+    },
+    "authorise":{
+      "authorise1":{"host":"http://192.168.33.10:8201"}
+    }
+  }
+}
