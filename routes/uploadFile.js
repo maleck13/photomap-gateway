@@ -10,14 +10,13 @@ module.exports = function uploadFile(req,res,next){
 
   async.waterfall([
     function upload(callback){
-      console.log("doing upload ");
       fileClient.upload(req,user,function uploadDone(err,response, body,status){
         callback(err,status,body);
       });
     }
   ], function (err, status,response){
     if(err){
-      res.status(status).json({});
+      res.status(status).end(err);
     }
     else{
       //add some authentication

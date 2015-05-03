@@ -2,7 +2,7 @@ var config = require('../configuration');
 
 module.exports = function login (req,res,next){
   var user,pass;
-  user = req.body.userid;
+  user = req.body.email;
   pass = req.body.password;
   var serviceConfig = config.getAuthenticationService();
   var authenticateClient = require('../clients/authenticate')(serviceConfig);

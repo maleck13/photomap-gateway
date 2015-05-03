@@ -10,7 +10,6 @@ module.exports = function getFile(req,res,next){
   async.series([
     function(callback){
       authoriseClient.checkAuthorisation(user,file,"read",function(err,ok,body){
-        console.log("ok ", ok.statusCode);
         if(ok.statusCode == 401){
           return callback({"status":401,"message":"unauthorised"});
         }
@@ -18,13 +17,10 @@ module.exports = function getFile(req,res,next){
       });
     }
   ],function (err, ok){
-    console.log("error ", err);
     if(err){
-      res.status(err.status).json(err);
+      res.status(err.status).end(err);
     }else {
       fileClient.getFile(res, user, file);
     }
   });
-  //fileClient.getFile(res,user,file);
-
 };

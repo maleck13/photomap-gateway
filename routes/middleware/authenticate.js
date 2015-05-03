@@ -1,15 +1,22 @@
 var config = require('../../configuration');
 module.exports = function authenticate(req,res,next){
   var authClient = require('../../clients/authenticate')(config.getAuthenticationService());
-  authClient.validate({"cookie":req.header("cookie")},function (err,response,body,status){
+  if(req.query.userid && req.query.sessid){
+    console.log("checking query params");
+    authClient.validateParams(req.query.userid,req.query.sessid,response)
+  }else {
+    authClient.validate(req.headers, response);
+  }
+  function response (err, response, body, status) {
     console.log("response from validate ", err, body, status);
-    if(err) {
+    if (err || status == 401) {
       err.status = status;
-      res.status(status).json({"error":"unauthenticated"});
-    }else{
+      res.status(status).json({"error": "unauthenticated"});
+    } else {
       req.user = JSON.parse(body);
       next();
     }
-  });
-
+  }
 };
+
+

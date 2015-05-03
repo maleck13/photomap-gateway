@@ -1,11 +1,14 @@
 var request = require('request');
-
+//todo make separate node module
 module.exports = function (serviceConfig) {
-  function commonCallback(err, res, body, cb) {
+  function commonCallback(err,res,body,cb){
     var status = res && res.statusCode || 500;
-    if (err)return cb(err, body, status);
-    else {
-      return cb(undefined, res, body, status);
+    if(! err && (status && status >= 400)){
+      err = {"error":"unexpected error"};
+    }
+    if(err)return cb(err,res,body,status);
+    else{
+      return cb(undefined,res,body,status);
     }
   }
   return{
