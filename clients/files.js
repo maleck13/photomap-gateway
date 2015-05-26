@@ -1,4 +1,5 @@
 var request = require('request');
+var moment = require('moment');
 
 module.exports = function (serviceConfig){
 
@@ -31,8 +32,45 @@ module.exports = function (serviceConfig){
       });
     },
     "getFilesInRange": function(user,from, to ,cb){
-      var url = serviceConfig.host + "/pictures?user="+user+"&from="+from+"&to="+to;
+      var url = serviceConfig.host + "/pictures/?user="+user+"&from="+from+"&to="+to;
       request({"url":url,"method":"get"}, function(err, resp, body){
+        commonCallback(err,resp,body,cb);
+      });
+    },
+    "getIncompletePics" : function (user, cb){
+      var url = serviceConfig.host + "/pictures/incomplete?user="+user;
+      request({"url":url,"method":"get"}, function(err, resp, body){
+        commonCallback(err,resp,body,cb);
+      });
+    },
+    "updatePictureMeta": function (id,user,data,cb){
+      var url = serviceConfig.host + "/picture/" + id;
+      console.log("update picture meta ", url);
+      var payload = {};
+      if(data.name){
+        payload.Name = data.name;
+      }
+      if(data.time){
+        payload.Time = moment(data.time * 1000).utc().format();
+      }
+      if(Array.isArray(data.location)){
+        payload.LonLat = [];
+        for(var i=0; i < data.location.length; i++){
+          payload.LonLat.push(parseFloat(data.location[i],5));
+        }
+      }
+      if(data.tags){
+        payload.Tags = data.tags;
+      }
+      if(data.year){
+        payload.Year = data.year;
+      }
+      if(data.complete){
+        payload.Complete = data.complete;
+      }
+      payload.User = user;
+      console.log("update picture meta ", url, payload);
+      request({"url":url,"method":"put","json":true,"body":payload}, function(err, resp, body){
         commonCallback(err,resp,body,cb);
       });
     }

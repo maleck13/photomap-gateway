@@ -7,9 +7,11 @@ module.exports = function getFile(req,res,next){
   var authoriseClient = require('../clients/authorise')(config.getAuthorisationService());
   var user = req.user.userid;
   var file = req.query.file;
+  var fileId = req.query.id;
   async.series([
     function(callback){
-      authoriseClient.checkAuthorisation(user,file,"read",function(err,ok,body){
+      authoriseClient.checkAuthorisation(user,fileId,"read",function(err,ok,body){
+        console.log("response form authorise ", err, body);
         if(ok.statusCode == 401){
           return callback({"status":401,"message":"unauthorised"});
         }
@@ -18,7 +20,7 @@ module.exports = function getFile(req,res,next){
     }
   ],function (err, ok){
     if(err){
-      res.status(err.status).end(err);
+      res.status(err.status).json(err);
     }else {
       fileClient.getFile(res, user, file);
     }

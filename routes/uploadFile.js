@@ -16,12 +16,13 @@ module.exports = function uploadFile(req,res,next){
     }
   ], function (err, status,response){
     if(err){
-      res.status(status).end(err);
+      res.status(status).json(err);
     }
     else{
-      //add some authentication
+      //add some authorisation
       response = JSON.parse(response);
-      authoriseClient.addAuthorisation(user,response.Name,"read:write", function (err, ok, body){
+      console.log("response from upload ", response)
+      authoriseClient.addAuthorisation(user,response.FileId,"read:write", function (err, ok, body){
         if(err) return res.status(500).json(err);
         res.json(response);
       });
