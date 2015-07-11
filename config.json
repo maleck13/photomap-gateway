@@ -1,13 +1,13 @@
 {
   "services":{
     "authenticate":{
-      "authenticate1":{"host":"http://192.168.33.10:8200"}
+      "authenticate1":{"host":"http://authentication:9000"}
     },
     "files":{
-      "files1":{"host":"http://192.168.33.10:8002"}
+      "files1":{"host":"http://photoprocessor:9002"}
     },
     "authorise":{
-      "authorise1":{"host":"http://192.168.33.10:8201"}
+      "authorise1":{"host":"http://authorisation:9001"}
     }
   }
 }

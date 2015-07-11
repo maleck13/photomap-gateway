@@ -2,6 +2,6 @@
 
 docker stop gateway;
 docker rm gateway
-docker build -t gateway .
-docker run -d -p 8003:8080  --name="gateway" gateway
+docker build -t maleck13/gateway .
+docker run -d  --name="gateway" maleck13/gateway
 

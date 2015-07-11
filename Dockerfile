@@ -10,5 +10,5 @@ COPY . /src
 # Install app dependencies
 RUN cd /src; npm install
 ENV CONF /src/config.json
-EXPOSE  8080
+EXPOSE  8000
 CMD ["node", "/src/server.js"]
