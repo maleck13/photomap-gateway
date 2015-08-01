@@ -43,9 +43,22 @@ module.exports = function (serviceConfig){
         commonCallback(err,resp,body,cb);
       });
     },
+    "getFilesByLocation": function (user, lon,lat,dist,cb){
+      var url = serviceConfig.host + "/pictures/byloc?user="+user+"&lon="+lon+"&lat="+lat+"&dist="+dist;
+      request({"url":url,"method":"get"},function(err,resp,body){
+        commonCallback(err,resp,body,cb);
+      });
+    },
+    "getFilesByTags": function(user,tag, cb){
+      var url = serviceConfig.host + "/pictures/bytag?user="+user+"&tag="+tag;
+      console.log("calling url ", url);
+      request({"url":url,"method":"get"},function(err,resp,body){
+        commonCallback(err,resp,body,cb);
+      });
+    },
     "updatePictureMeta": function (id,user,data,cb){
       var url = serviceConfig.host + "/picture/" + id;
-      console.log("update picture meta ", url);
+
       var payload = {};
       if(data.name){
         payload.Name = data.name;
